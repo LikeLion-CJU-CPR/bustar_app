@@ -31,20 +31,29 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.monetization_on),
-            label: '포인트',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '내 정보'),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[800],
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+          border: Border(top: BorderSide(color: Colors.grey[300]!)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.monetization_on),
+              label: '포인트',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '내 정보'),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue[800],
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
       ),
     );
   }
