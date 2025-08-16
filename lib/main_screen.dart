@@ -2,7 +2,7 @@ import 'package:bustar_app/screens/point_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/home_screen.dart';
-import 'screens/my_info_screen.dart';
+import 'screens/my_info/my_info_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
