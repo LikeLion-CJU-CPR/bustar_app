@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bustar_app/widgets/action_button.dart';
+import '../../../../widgets/action_button.dart'; // ActionButton import
 
 class PointsOverviewCard extends StatelessWidget {
   const PointsOverviewCard({super.key});
@@ -10,7 +9,7 @@ class PointsOverviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const currentPoints = 2450;
     const nextLevelPoints = 3000;
-    final progress = (currentPoints / nextLevelPoints); // Flutter는 0.0 ~ 1.0 사용
+    final progress = (currentPoints / nextLevelPoints);
 
     return Container(
       padding: const EdgeInsets.all(24.0),
@@ -25,7 +24,6 @@ class PointsOverviewCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // 보유 포인트 섹션
           Text(
             currentPoints.toString().replaceAllMapped(
               RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
@@ -43,8 +41,6 @@ class PointsOverviewCard extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.blue.shade700),
           ),
           const SizedBox(height: 24),
-
-          // 프로그레스 바 섹션
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -59,10 +55,12 @@ class PointsOverviewCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: SizedBox(
-              height: 8, // h-2
+              height: 8,
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: Colors.blue.shade200.withAlpha(128),
+                backgroundColor: Colors.blue.shade200.withValues(
+                  alpha: .5,
+                ), // withAlpha -> withOpacity
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade600),
               ),
             ),
@@ -82,13 +80,12 @@ class PointsOverviewCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-
-          // 버튼 섹션
           Row(
             children: [
               ActionButton(
                 icon: CupertinoIcons.gift_fill,
                 label: '혜택 사용하기',
+                onPressed: () {},
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,
               ),
@@ -96,6 +93,7 @@ class PointsOverviewCard extends StatelessWidget {
               ActionButton(
                 icon: CupertinoIcons.ticket_fill,
                 label: '내 쿠폰함',
+                onPressed: () {},
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.blue.shade600,
                 side: BorderSide(color: Colors.blue.shade600),

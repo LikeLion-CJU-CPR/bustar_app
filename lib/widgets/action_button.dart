@@ -8,6 +8,7 @@ class ActionButton extends StatelessWidget {
     required this.backgroundColor,
     required this.foregroundColor,
     this.side,
+    required this.onPressed,
   });
 
   final IconData icon;
@@ -15,12 +16,13 @@ class ActionButton extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
   final BorderSide? side;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: OutlinedButton.icon(
-        onPressed: () {},
+        onPressed: onPressed,
         icon: Icon(icon, size: 16),
         label: Text(label),
         style: OutlinedButton.styleFrom(

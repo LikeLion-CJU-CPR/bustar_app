@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/home_screen.dart';
-import 'screens/point/point_screen.dart';
+import 'screens/point/dashboard_screen.dart';
 import 'screens/my_info/my_info_screen.dart';
 
 class MainScreen extends StatefulWidget {
