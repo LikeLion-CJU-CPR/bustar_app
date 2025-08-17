@@ -23,30 +23,35 @@ class CategoryFilters extends StatelessWidget {
 
     return SizedBox(
       height: 36,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        separatorBuilder: (context, index) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          final bool isSelected = selectedCategory == category['id'];
-          return ElevatedButton.icon(
-            onPressed: () => onCategorySelected(category['id'] as String),
-            icon: Icon(category['icon'] as IconData, size: 16),
-            label: Text(category['name'] as String),
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: isSelected ? Colors.blue.shade600 : Colors.white,
-              foregroundColor: isSelected ? Colors.white : Colors.black,
-              side: isSelected
-                  ? BorderSide.none
-                  : BorderSide(color: Colors.grey.shade300),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+      child: Row(
+        children: [
+          for (int i = 0; i < categories.length; i++) ...[
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    onCategorySelected(categories[i]['id'] as String),
+                icon: Icon(categories[i]['icon'] as IconData, size: 16),
+                label: Text(categories[i]['name'] as String),
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: selectedCategory == categories[i]['id']
+                      ? Colors.blue.shade600
+                      : Colors.white,
+                  foregroundColor: selectedCategory == categories[i]['id']
+                      ? Colors.white
+                      : Colors.black,
+                  side: selectedCategory == categories[i]['id']
+                      ? BorderSide.none
+                      : BorderSide(color: Colors.grey.shade300),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
               ),
             ),
-          );
-        },
+            if (i < categories.length - 1) const SizedBox(width: 8),
+          ],
+        ],
       ),
     );
   }

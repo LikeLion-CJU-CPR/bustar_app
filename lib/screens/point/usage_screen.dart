@@ -197,7 +197,7 @@ class _UsageScreenState extends State<UsageScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
               '포인트 사용',
@@ -210,45 +210,51 @@ class _UsageScreenState extends State<UsageScreen> {
           ],
         ),
         actions: [
-          TextButton.icon(
-            icon: const Icon(CupertinoIcons.ticket_fill, size: 16),
-            label: const Text('내 쿠폰함'),
-            onPressed: () {},
-            style: TextButton.styleFrom(foregroundColor: Colors.blue.shade600),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              icon: const Icon(CupertinoIcons.ticket_fill, color: Colors.black),
+              onPressed: () {
+                // TODO: Implement coupon box navigation
+              },
+            ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            CategoryFilters(
-              selectedCategory: _selectedCategory,
-              onCategorySelected: (category) {
-                setState(() {
-                  _selectedCategory = category;
-                });
-              },
-            ),
-            const SizedBox(height: 24),
-            ListView.separated(
-              physics: const NeverScrollableScrollPhysics(), // 중첩 스크롤 방지
-              shrinkWrap: true,
-              itemCount: filteredRewards.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                final reward = filteredRewards[index];
-                return RewardListItem(
-                  reward: reward,
-                  currentPoints: _currentPoints,
-                  isPurchased: _purchasedIds.contains(reward.id),
-                  onPurchase: (item) {
-                    _showPurchaseConfirmationDialog(item);
-                  },
-                );
-              },
-            ),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              CategoryFilters(
+                selectedCategory: _selectedCategory,
+                onCategorySelected: (category) {
+                  setState(() {
+                    _selectedCategory = category;
+                  });
+                },
+              ),
+              const SizedBox(height: 24),
+              ListView.separated(
+                physics: const NeverScrollableScrollPhysics(), // 중첩 스크롤 방지
+                shrinkWrap: true,
+                itemCount: filteredRewards.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                itemBuilder: (context, index) {
+                  final reward = filteredRewards[index];
+                  return RewardListItem(
+                    reward: reward,
+                    currentPoints: _currentPoints,
+                    isPurchased: _purchasedIds.contains(reward.id),
+                    onPurchase: (item) {
+                      _showPurchaseConfirmationDialog(item);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
