@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../../widgets/action_button.dart'; // ActionButton import
+
+import '../../../../widgets/action_button.dart';
+import '../../usage_screen.dart';
 
 class PointsOverviewCard extends StatelessWidget {
   const PointsOverviewCard({super.key});
@@ -85,7 +87,13 @@ class PointsOverviewCard extends StatelessWidget {
               ActionButton(
                 icon: CupertinoIcons.gift_fill,
                 label: '혜택 사용하기',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const UsageScreen(),
+                    ),
+                  );
+                },
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,
               ),
