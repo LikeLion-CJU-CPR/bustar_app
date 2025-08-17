@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 // ✨ 위젯 import 경로가 새로운 구조에 맞게 변경됩니다.
-import 'widgets/achievements_card.dart';
-import 'widgets/points_overview_card.dart';
-import 'widgets/recent_history_card.dart';
+import 'widgets/main_page/achievements_card.dart';
+import 'widgets/main_page/points_overview_card.dart';
+import 'widgets/main_page/recent_history_card.dart';
 
 class PointScreen extends StatelessWidget {
   const PointScreen({super.key});
