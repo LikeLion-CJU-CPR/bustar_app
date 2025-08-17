@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/action_button.dart';
+import '../../my_coupons_screen.dart';
 import '../../usage_screen.dart';
 
 class PointsOverviewCard extends StatelessWidget {
@@ -101,7 +102,13 @@ class PointsOverviewCard extends StatelessWidget {
               ActionButton(
                 icon: CupertinoIcons.ticket_fill,
                 label: '내 쿠폰함',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const MyCouponsScreen(),
+                    ),
+                  );
+                },
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.blue.shade600,
                 side: BorderSide(color: Colors.blue.shade600),

@@ -37,7 +37,7 @@ class RewardListItem extends StatelessWidget {
               : null,
           padding: const EdgeInsets.all(16.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(reward.icon, style: const TextStyle(fontSize: 32)),
               const SizedBox(width: 16),

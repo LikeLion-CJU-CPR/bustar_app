@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'models/reward_item_model.dart';
+import 'my_coupons_screen.dart';
 import 'widgets/usage_page/category_filters.dart';
 import 'widgets/usage_page/reward_list_item.dart';
 
@@ -211,12 +212,16 @@ class _UsageScreenState extends State<UsageScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 14.0),
             child: IconButton(
-              icon: const Icon(CupertinoIcons.ticket_fill, color: Colors.black),
               onPressed: () {
-                // TODO: Implement coupon box navigation
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MyCouponsScreen(),
+                  ),
+                );
               },
+              icon: const Icon(CupertinoIcons.ticket_fill, color: Colors.black),
             ),
           ),
         ],
