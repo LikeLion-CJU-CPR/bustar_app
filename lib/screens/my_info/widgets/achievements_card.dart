@@ -11,44 +11,55 @@ class AchievementsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      header: const CardHeader(icon: CupertinoIcons.star_fill, title: '최근 성취도'),
-      content: Column(
-        children: achievements.map((item) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200.withValues(alpha: .5),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Row(
-              children: [
-                Text(item['icon']!, style: const TextStyle(fontSize: 24)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CardHeader(icon: CupertinoIcons.star_fill, title: '최근 성취도'),
+          CardContent(
+            child: Column(
+              children: achievements.map((item) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200.withValues(alpha: .5),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
                     children: [
-                      Text(item['name']!, style: const TextStyle(fontSize: 14)),
-                      Text(
-                        item['date']!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
+                      Text(item['icon']!, style: const TextStyle(fontSize: 24)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['name']!,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              item['date']!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                      Icon(
+                        CupertinoIcons.star_fill,
+                        size: 16,
+                        color: Colors.yellow.shade700,
                       ),
                     ],
                   ),
-                ),
-                Icon(
-                  CupertinoIcons.star_fill,
-                  size: 16,
-                  color: Colors.yellow.shade700,
-                ),
-              ],
+                );
+              }).toList(),
             ),
-          );
-        }).toList(),
+          ),
+          const SizedBox(height: 16), // Add bottom padding to balance the card
+        ],
       ),
     );
   }
