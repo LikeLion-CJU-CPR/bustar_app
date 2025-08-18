@@ -1,5 +1,7 @@
+import 'package:bustar_app/screens/point/providers/point_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../widgets/action_button.dart';
 import '../../my_coupons_screen.dart';
@@ -10,7 +12,8 @@ class PointsOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const currentPoints = 2450;
+    final pointProvider = context.watch<PointProvider>();
+    final currentPoints = pointProvider.currentPoints;
     const nextLevelPoints = 3000;
     final progress = (currentPoints / nextLevelPoints);
 
@@ -44,13 +47,13 @@ class PointsOverviewCard extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.blue.shade700),
           ),
           const SizedBox(height: 24),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('다음 레벨까지', style: TextStyle(fontSize: 14)),
+              const Text('다음 레벨까지', style: TextStyle(fontSize: 14)),
               Text(
                 '${nextLevelPoints - currentPoints}P',
-                style: TextStyle(fontSize: 14),
+                style: const TextStyle(fontSize: 14),
               ),
             ],
           ),
@@ -61,9 +64,7 @@ class PointsOverviewCard extends StatelessWidget {
               height: 8,
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: Colors.blue.shade200.withValues(
-                  alpha: .5,
-                ), // withAlpha -> withOpacity
+                backgroundColor: Colors.blue.shade200.withValues(alpha: .5),
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade600),
               ),
             ),

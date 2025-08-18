@@ -1,5 +1,7 @@
+import 'package:bustar_app/screens/point/providers/point_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'models/reward_item_model.dart';
 import 'my_coupons_screen.dart';
@@ -16,7 +18,6 @@ class UsageScreen extends StatefulWidget {
 class _UsageScreenState extends State<UsageScreen> {
   String _selectedCategory = 'all';
   final Set<int> _purchasedIds = {};
-  int _currentPoints = 2450;
 
   // --- 임시 데이터 ---
   final List<RewardItem> rewards = [
@@ -79,10 +80,13 @@ class _UsageScreenState extends State<UsageScreen> {
   // --- 임시 데이터 끝 ---
 
   // 구매 확인 다이얼로그 표시 함수
-  Future<void> _showPurchaseConfirmationDialog(RewardItem item) async {
+  Future<void> _showPurchaseConfirmationDialog(
+      RewardItem item, BuildContext context) async {
+    final currentPoints = context.read<PointProvider>().currentPoints;
+
     return showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -137,7 +141,7 @@ class _UsageScreenState extends State<UsageScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                '구매 후 보유 포인트: ${(_currentPoints - item.points)}P',
+                '구매 후 보유 포인트: ${(currentPoints - item.points)}P',
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
               ),
             ],
@@ -146,7 +150,7 @@ class _UsageScreenState extends State<UsageScreen> {
             Expanded(
               child: TextButton(
                 child: const Text('취소'),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.of(dialogContext).pop(),
               ),
             ),
             const SizedBox(width: 8),
@@ -157,11 +161,11 @@ class _UsageScreenState extends State<UsageScreen> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
+                  context.read<PointProvider>().deductPoints(item.points);
                   setState(() {
                     _purchasedIds.add(item.id);
-                    _currentPoints -= item.points;
                   });
-                  Navigator.of(context).pop();
+                  Navigator.of(dialogContext).pop();
                 },
                 child: const Text('구매 확정'),
               ),
@@ -180,6 +184,9 @@ class _UsageScreenState extends State<UsageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pointProvider = context.watch<PointProvider>();
+    final currentPoints = pointProvider.currentPoints;
+
     final filteredRewards = rewards
         .where(
           (reward) =>
@@ -205,7 +212,7 @@ class _UsageScreenState extends State<UsageScreen> {
               style: TextStyle(color: Colors.black, fontSize: 18),
             ),
             Text(
-              '보유 포인트: ${_currentPoints}P',
+              '보유 포인트: ${currentPoints}P',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
             ),
           ],
@@ -250,10 +257,10 @@ class _UsageScreenState extends State<UsageScreen> {
                   final reward = filteredRewards[index];
                   return RewardListItem(
                     reward: reward,
-                    currentPoints: _currentPoints,
+                    currentPoints: currentPoints,
                     isPurchased: _purchasedIds.contains(reward.id),
                     onPurchase: (item) {
-                      _showPurchaseConfirmationDialog(item);
+                      _showPurchaseConfirmationDialog(item, context);
                     },
                   );
                 },

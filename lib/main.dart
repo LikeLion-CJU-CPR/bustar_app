@@ -1,6 +1,8 @@
 import 'package:bustar_app/main_screen.dart';
+import 'package:bustar_app/screens/point/providers/point_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +12,12 @@ void main() {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PointProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
