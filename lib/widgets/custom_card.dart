@@ -27,7 +27,16 @@ class CustomCard extends StatelessWidget {
 class CardHeader extends StatelessWidget {
   final IconData icon;
   final String title;
-  const CardHeader({super.key, required this.icon, required this.title});
+  final Color? iconColor;
+  final double? fontSize;
+
+  const CardHeader({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.iconColor,
+    this.fontSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +45,14 @@ class CardHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: Colors.grey.shade700),
+          Icon(icon, size: 20, color: iconColor ?? Colors.grey.shade700),
           const SizedBox(width: 8),
           Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: fontSize ?? 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

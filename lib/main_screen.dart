@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/home/home_screen.dart'; // 경로 변경
 import 'screens/point/dashboard_screen.dart';
 import 'screens/my_info/my_info_screen.dart';
 
@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   // 보여줄 페이지 리스트
   static const List<Widget> _pages = <Widget>[
-    HomeScreen(),
+    RouteSearchScreen(), // ✨ HomeScreen -> RouteSearchScreen으로 교체
     PointScreen(),
     MyInfoScreen(),
   ];
