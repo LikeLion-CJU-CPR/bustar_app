@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:bustar_app/screens/point/providers/point_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:bustar_app/config/api_config.dart';
 import 'package:provider/provider.dart';
 
 import 'models/reward_item_model.dart';
@@ -18,71 +22,61 @@ class UsageScreen extends StatefulWidget {
 class _UsageScreenState extends State<UsageScreen> {
   String _selectedCategory = 'all';
   final Set<int> _purchasedIds = {};
+  late Future<List<RewardItem>> _rewardsFuture;
 
-  // --- 임시 데이터 ---
-  final List<RewardItem> rewards = [
-    RewardItem(
-      id: 1,
-      name: '커피 할인 쿠폰',
-      description: '스타벅스 아메리카노 1,000원 할인',
-      points: 300,
-      icon: '☕',
-      category: 'food',
-      discount: '1,000원',
-      expiry: '30일',
-      popular: true,
-    ),
-    RewardItem(
-      id: 2,
-      name: '지하철 무료 승차권',
-      description: '1회 무료 이용 가능',
-      points: 500,
-      icon: '🚇',
-      category: 'transport',
-      discount: '1회 무료',
-      expiry: '60일',
-      popular: true,
-    ),
-    RewardItem(
-      id: 3,
-      name: '편의점 할인 쿠폰',
-      description: 'CU, GS25 500원 할인',
-      points: 200,
-      icon: '🏪',
-      category: 'shopping',
-      discount: '500원',
-      expiry: '14일',
-      popular: false,
-    ),
-    RewardItem(
-      id: 4,
-      name: '버스 무료 승차권',
-      description: '시내버스 1회 무료 이용',
-      points: 400,
-      icon: '🚌',
-      category: 'transport',
-      discount: '1회 무료',
-      expiry: '60일',
-      popular: false,
-    ),
-    RewardItem(
-      id: 5,
-      name: '배달 할인 쿠폰',
-      description: '배달의민족 3,000원 할인',
-      points: 800,
-      icon: '🚚',
-      category: 'food',
-      discount: '3,000원',
-      expiry: '30일',
-      popular: false,
-    ),
-  ];
-  // --- 임시 데이터 끝 ---
+  @override
+  void initState() {
+    super.initState();
+    _rewardsFuture = _fetchRewards();
+  }
+
+  Future<List<RewardItem>> _fetchRewards() async {
+    final response = await http.get(Uri.parse('$baseUrl/coupon/'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      return data.map((item) {
+        String icon;
+        String category;
+        String affiliate = item['coupon_affiliate'] ?? '기타';
+
+        switch (affiliate) {
+          case 'gs편의점':
+            icon = '🏪';
+            category = 'shopping';
+            break;
+          case '멋사커피':
+            icon = '☕';
+            category = 'food';
+            break;
+          default:
+            icon = '🎁';
+            category = 'etc';
+        }
+
+        return RewardItem(
+          id: item['coupon_id'],
+          name: item['coupon_name'],
+          description: '$affiliate ${item['coupon_discount']}원 할인',
+          points: item['coupon_price'],
+          icon: icon,
+          category: category,
+          discount: '${item['coupon_discount']}원',
+          expiry: '${item['coupon_period']}일',
+          popular: false, // API는 이 필드를 제공하지 않습니다.
+        );
+      }).toList();
+    } else {
+      throw Exception('API에서 보상 목록을 불러오는 데 실패했습니다.');
+    }
+  }
 
   // 구매 확인 다이얼로그 표시 함수
   Future<void> _showPurchaseConfirmationDialog(
-      RewardItem item, BuildContext context) async {
-    final currentPoints = context.read<PointProvider>().currentPoints;
+    RewardItem item,
+    BuildContext context,
+  ) async {
+    final pointProvider = context.read<PointProvider>();
 
     return showDialog<void>(
       context: context,
@@ -141,7 +135,7 @@ class _UsageScreenState extends State<UsageScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                '구매 후 보유 포인트: ${(currentPoints - item.points)}P',
+                '구매 후 보유 포인트: ${(pointProvider.currentPoints - item.points)}P',
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
               ),
             ],
@@ -160,12 +154,51 @@ class _UsageScreenState extends State<UsageScreen> {
                   backgroundColor: Colors.blue.shade600,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {
-                  context.read<PointProvider>().deductPoints(item.points);
-                  setState(() {
-                    _purchasedIds.add(item.id);
-                  });
-                  Navigator.of(dialogContext).pop();
+                onPressed: () async {
+                  try {
+                    final response = await http.post(
+                      Uri.parse('$baseUrl/purchase/product/'),
+                      headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                      },
+                      body: json.encode({
+                        'user_id': 1, // 사용자 ID 1로 가정
+                        'product_amount': item.points,
+                        'granted_coupon_id': item.id,
+                      }),
+                    );
+
+                    if (!context.mounted) return;
+
+                    Navigator.of(dialogContext).pop();
+
+                    if (response.statusCode == 200) {
+                      final responseData =
+                          json.decode(utf8.decode(response.bodyBytes));
+                      pointProvider
+                          .setPoints(responseData['new_point_balance']);
+                      setState(() {
+                        _purchasedIds.add(item.id);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('상품을 성공적으로 구매했습니다!'),
+                            backgroundColor: Colors.green),
+                      );
+                    } else {
+                      final errorData =
+                          json.decode(utf8.decode(response.bodyBytes));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('구매 실패: ${errorData['detail']}'),
+                          backgroundColor: Colors.red));
+                    }
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    Navigator.of(dialogContext).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('오류가 발생했습니다: $e'),
+                        backgroundColor: Colors.red));
+                  }
                 },
                 child: const Text('구매 확정'),
               ),
@@ -186,14 +219,6 @@ class _UsageScreenState extends State<UsageScreen> {
   Widget build(BuildContext context) {
     final pointProvider = context.watch<PointProvider>();
     final currentPoints = pointProvider.currentPoints;
-
-    final filteredRewards = rewards
-        .where(
-          (reward) =>
-              _selectedCategory == 'all' ||
-              reward.category == _selectedCategory,
-        )
-        .toList();
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -234,39 +259,61 @@ class _UsageScreenState extends State<UsageScreen> {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              CategoryFilters(
-                selectedCategory: _selectedCategory,
-                onCategorySelected: (category) {
-                  setState(() {
-                    _selectedCategory = category;
-                  });
-                },
-              ),
-              const SizedBox(height: 24),
-              ListView.separated(
-                physics: const NeverScrollableScrollPhysics(), // 중첩 스크롤 방지
-                shrinkWrap: true,
-                itemCount: filteredRewards.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  final reward = filteredRewards[index];
-                  return RewardListItem(
-                    reward: reward,
-                    currentPoints: currentPoints,
-                    isPurchased: _purchasedIds.contains(reward.id),
-                    onPurchase: (item) {
-                      _showPurchaseConfirmationDialog(item, context);
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
+        child: FutureBuilder<List<RewardItem>>(
+          future: _rewardsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('오류: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              final rewards = snapshot.data!;
+              final filteredRewards = rewards
+                  .where(
+                    (reward) =>
+                        _selectedCategory == 'all' ||
+                        reward.category == _selectedCategory,
+                  )
+                  .toList();
+
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    CategoryFilters(
+                      selectedCategory: _selectedCategory,
+                      onCategorySelected: (category) {
+                        setState(() {
+                          _selectedCategory = category;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: filteredRewards.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        final reward = filteredRewards[index];
+                        return RewardListItem(
+                          reward: reward,
+                          currentPoints: currentPoints,
+                          isPurchased: _purchasedIds.contains(reward.id),
+                          onPurchase: (item) {
+                            _showPurchaseConfirmationDialog(item, context);
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: Text('데이터가 없습니다.'));
+            }
+          },
         ),
       ),
     );

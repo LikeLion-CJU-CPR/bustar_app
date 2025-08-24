@@ -14,7 +14,8 @@ void main() {
   );
   runApp(
     ChangeNotifierProvider(
-      create: (context) => PointProvider(),
+      create: (context) =>
+          PointProvider()..fetchInitialPoints(1), // 앱 시작 시 포인트 정보 로드
       child: const MyApp(),
     ),
   );
