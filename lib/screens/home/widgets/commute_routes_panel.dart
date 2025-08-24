@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:bustar_app/widgets/custom_card.dart';
-import 'package:bustar_app/screens/route/route_page.dart';
+import 'package:bustar_app/screens/route/route_status_screen.dart';
 
 class CommuteCardsPanel extends StatelessWidget {
   const CommuteCardsPanel({super.key});
@@ -20,7 +20,7 @@ class CommuteCardsPanel extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RoutePage(index: 0),
+                    builder: (context) => const RouteStatusScreen(index: 0),
                   ),
                 );
               },

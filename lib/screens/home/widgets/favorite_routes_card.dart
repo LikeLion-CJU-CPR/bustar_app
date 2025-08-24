@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bustar_app/widgets/custom_card.dart';
-import 'package:bustar_app/screens/route/route_page.dart';
+import 'package:bustar_app/screens/route/route_status_screen.dart';
 
 class FavoriteRoutesSection extends StatefulWidget {
   const FavoriteRoutesSection({super.key});
@@ -75,7 +75,7 @@ class _FavoriteRoutesSectionState extends State<FavoriteRoutesSection> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RoutePage(index: idx)),
+          MaterialPageRoute(builder: (context) => RouteStatusScreen(index: idx)),
         );
       },
       child: CustomCard(
