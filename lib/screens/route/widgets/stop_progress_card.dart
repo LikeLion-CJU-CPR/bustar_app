@@ -87,7 +87,8 @@ class _StopProgressCardState extends State<StopProgressCard> {
                   StopIconType iconType = StopIconType.dot;
                   if (stop['isCurrent'] == true) {
                     iconType = StopIconType.bus;
-                  } else if (stop['isDestination'] == true) {
+                  } else if (stop['isDestination'] == true ||
+                      stop['isBoarding'] == true) {
                     iconType = StopIconType.star;
                   }
 

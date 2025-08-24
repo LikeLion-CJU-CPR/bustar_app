@@ -66,7 +66,7 @@ class RouteOverviewCard extends StatelessWidget {
               style: TextStyle(
                 color: isCurrent ? Colors.white : color,
                 fontWeight: FontWeight.bold,
-                fontSize: isCurrent ? 16 : 12,
+                fontSize: isCurrent ? 14 : 12,
               ),
             ),
             const SizedBox(height: 2),
@@ -74,7 +74,7 @@ class RouteOverviewCard extends StatelessWidget {
               subtitle,
               style: TextStyle(
                 color: isCurrent ? Colors.white70 : color,
-                fontSize: 12,
+                fontSize: isCurrent ? 12 : 10,
               ),
             ),
           ],
