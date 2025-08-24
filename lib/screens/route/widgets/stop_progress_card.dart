@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-
 import 'package:bustar_app/widgets/custom_card.dart';
 
 class StopProgressCard extends StatefulWidget {
-  const StopProgressCard({super.key});
+  final List<Map<String, dynamic>> stops;
+  final String routeType;
+  const StopProgressCard({
+    super.key,
+    required this.stops,
+    required this.routeType,
+  });
 
   @override
   State<StopProgressCard> createState() => _StopProgressCardState();
 }
 
 class _StopProgressCardState extends State<StopProgressCard> {
-  // ✨ 2. ScrollController 생성
   final ScrollController _scrollController = ScrollController();
-
-  // 각 정류장 아이템의 너비
   final double _itemWidth = 80.0;
-
-  // 버스 아이콘의 인덱스 (0부터 시작)
-  final int _busIconIndex = 4;
+  int _busIconIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // ✨ 3. 첫 프레임이 렌더링된 후 스크롤 위치를 계산하고 이동
+    _busIconIndex = widget.stops.indexWhere(
+      (stop) => stop['isCurrent'] == true,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToCenter();
+      if (_busIconIndex != -1) {
+        _scrollToCenter();
+      }
     });
   }
 
@@ -34,18 +38,11 @@ class _StopProgressCardState extends State<StopProgressCard> {
     super.dispose();
   }
 
-  // 버스 아이콘이 중앙에 오도록 스크롤하는 함수
   void _scrollToCenter() {
-    // 화면의 중앙 위치 계산
     final screenWidth = MediaQuery.of(context).size.width;
     final centerPosition = screenWidth / 2;
-
-    // 버스 아이콘의 중앙까지의 스크롤 위치 계산
-    // (버스 아이콘의 인덱스 * 아이템 너비) + (아이템 너비의 절반) - (화면 너비의 절반)
     final scrollOffset =
-        ((_busIconIndex + 1) * _itemWidth) + (_itemWidth / 2) - centerPosition;
-
-    // 계산된 위치로 스크롤 이동
+        ((_busIconIndex) * _itemWidth) + (_itemWidth / 2) - centerPosition;
     _scrollController.animateTo(
       scrollOffset,
       duration: const Duration(milliseconds: 500),
@@ -53,8 +50,22 @@ class _StopProgressCardState extends State<StopProgressCard> {
     );
   }
 
+  Color _getBusColor() {
+    switch (widget.routeType) {
+      case '급행':
+        return Colors.red;
+      case '간선':
+        return Colors.blue;
+      case '순환':
+        return Colors.yellow;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final busColor = _getBusColor();
     return CustomCard(
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: SizedBox(
@@ -68,58 +79,25 @@ class _StopProgressCardState extends State<StopProgressCard> {
               child: Container(height: 3, color: Colors.grey.shade300),
             ),
             SingleChildScrollView(
-              // ✨ 4. 컨트롤러 연결
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
-                children: [
-                  _StopItem(
-                    label: '충북대 입구',
-                    iconType: StopIconType.dot,
+                children: widget.stops.map((stop) {
+                  StopIconType iconType = StopIconType.dot;
+                  if (stop['isCurrent'] == true) {
+                    iconType = StopIconType.bus;
+                  } else if (stop['isDestination'] == true) {
+                    iconType = StopIconType.star;
+                  }
+
+                  return _StopItem(
+                    label: stop['stopName'],
+                    iconType: iconType,
                     itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '산업단지 입구',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '상화 전기',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '금호 어울림 아파트',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '출발공원',
-                    iconType: StopIconType.bus,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '현대백화점',
-                    iconType: StopIconType.star,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '현대자동차 서비스',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '다음 정류장',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                  _StopItem(
-                    label: '그 다음 정류장',
-                    iconType: StopIconType.dot,
-                    itemWidth: _itemWidth,
-                  ),
-                ],
+                    busColor: busColor,
+                  );
+                }).toList(),
               ),
             ),
           ],
@@ -135,11 +113,13 @@ class _StopItem extends StatelessWidget {
   final String label;
   final StopIconType iconType;
   final double itemWidth;
+  final Color busColor;
 
   const _StopItem({
     required this.label,
     required this.iconType,
     required this.itemWidth,
+    required this.busColor,
   });
 
   @override
@@ -171,7 +151,7 @@ class _StopItem extends StatelessWidget {
   Widget _buildIcon() {
     switch (iconType) {
       case StopIconType.bus:
-        return const Icon(Icons.directions_bus, color: Colors.blue, size: 36);
+        return Icon(Icons.directions_bus, color: busColor, size: 36);
       case StopIconType.star:
         return const Icon(Icons.star, color: Color(0xFF6CB77E), size: 16);
       case StopIconType.dot:

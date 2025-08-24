@@ -36,7 +36,7 @@ class _FavoriteRoutesSectionState extends State<FavoriteRoutesSection> {
                       child: _buildFavoriteRouteCard(
                         '청주대학교.뉴시스',
                         '오송역종점 정류장',
-                        idx: 2,
+                        idx: 1,
                         fromColor: Colors.red,
                         toColor: Colors.red,
                       ),
@@ -75,7 +75,9 @@ class _FavoriteRoutesSectionState extends State<FavoriteRoutesSection> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RouteStatusScreen(index: idx)),
+          MaterialPageRoute(
+            builder: (context) => RouteStatusScreen(index: idx),
+          ),
         );
       },
       child: CustomCard(

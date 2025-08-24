@@ -4,7 +4,22 @@ import 'package:bustar_app/widgets/custom_card.dart';
 import 'package:bustar_app/extensions/string_extensions.dart';
 
 class RouteOverviewCard extends StatelessWidget {
-  const RouteOverviewCard({super.key});
+  final String start;
+  final String startETA;
+  final String current;
+  final String currentETA;
+  final String end;
+  final String endETA;
+
+  const RouteOverviewCard({
+    super.key,
+    required this.start,
+    required this.startETA,
+    required this.current,
+    required this.currentETA,
+    required this.end,
+    required this.endETA,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +31,11 @@ class RouteOverviewCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStep(
-                '사직사거리.시립미술관(교육도서관) 정류장',
-                '7분 뒤 도착',
-                Colors.grey.shade600,
-              ),
+              _buildStep(start, startETA, Colors.grey.shade600),
               const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
-              _buildStep('솔밭공원', '현재 위치', Colors.black, isCurrent: true),
+              _buildStep(current, currentETA, Colors.black, isCurrent: true),
               const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
-              _buildStep('현대백화점', '3분 뒤 도착', Colors.grey.shade600),
+              _buildStep(end, endETA, Colors.grey.shade600),
             ],
           ),
         ],
