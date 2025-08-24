@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:bustar_app/screens/route/widgets/route_overview_card.dart';
 import 'package:bustar_app/screens/route/widgets/stop_progress_card.dart';
 import 'package:bustar_app/screens/route/widgets/recommendation_card.dart';
+import 'package:http/http.dart' as http;
+import 'package:bustar_app/config/api_config.dart';
 
 class BusSchedule {
   final String departureTime;
@@ -13,284 +18,120 @@ class BusSchedule {
 final List<Map<String, dynamic>> dummyData = [
   {
     'routeNumber': '711번',
-    'routeType': '간선',
     'routeOverview': {
-      'start': '우암초등학교',
-      'startETA': '7분 뒤 도착',
-      'current': '솔밭공원',
+      'start': '충북대학교입구',
+      'startETA': '5분 뒤 도착',
+      'current': '우암초등학교',
       'currentETA': '현재 위치',
-      'end': '현대백화점',
-      'endETA': '3분 뒤 도착',
+      'end': '청주대학교.뉴시스',
+      'endETA': '8분 뒤 도착',
     },
-    'departure_times': [
-      "02:04",
-      "02:05",
-      "05:50",
-      "06:30",
-      "07:25",
-      "07:55",
-      "08:25",
-      "09:00",
-      "09:40",
-      "10:10",
-      "10:45",
-      "11:20",
-      "11:55",
-      "12:30",
-      "13:10",
-      "13:45",
-      "14:20",
-      "14:55",
-      "15:30",
-      "16:05",
-      "16:40",
-      "17:15",
-      "17:50",
-      "18:25",
-      "19:00",
-      "19:35",
-      "20:10",
-      "20:45",
-      "21:20",
-      "21:55",
-      "23:20",
-    ],
-    'arrival_times': [
-      "02:06",
-      "02:07",
-      "06:10",
-      "07:45",
-      "08:40",
-      "09:10",
-      "09:40",
-      "10:15",
-      "10:55",
-      "11:25",
-      "12:00",
-      "12:35",
-      "13:10",
-      "13:45",
-      "14:25",
-      "15:00",
-      "15:35",
-      "16:10",
-      "16:45",
-      "17:20",
-      "17:55",
-      "18:30",
-      "19:05",
-      "19:40",
-      "20:15",
-      "20:50",
-      "21:25",
-      "22:00",
-      "22:35",
-      "23:10",
-      "00:30",
-    ],
-    'stopProgress': [
-      {
-        'stopName': '우암초등학교',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': true,
-      },
-      {
-        'stopName': '청주시청',
-        'isCurrent': false,
-        'isPassed': true,
-        'isDestination': false,
-        'isBoarding': false,
-      },
-      {
-        'stopName': '솔밭공원',
-        'isCurrent': true,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': false,
-      },
-      {
-        'stopName': '현대백화점',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': true,
-        'isBoarding': false,
-      },
-      {
-        'stopName': '지웰시티',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': false,
-      },
-    ],
     'recommendations': [
       {
-        'title': '화이트리에 청주 지웰시티점',
-        'distance': '0.5 km',
-        'hours': '영업시간 9:00 ~ 19:00',
+        'title': '청주대학교 근처 맛집',
+        'distance': '0.2 km',
+        'hours': '영업시간 11:00 ~ 22:00',
       },
       {
-        'title': '스타벅스 청주지웰시티점',
-        'distance': '0.6 km',
-        'hours': '영업시간 7:00 ~ 22:00',
+        'title': '청주대 정문 카페',
+        'distance': '0.3 km',
+        'hours': '영업시간 09:00 ~ 21:00',
       },
     ],
   },
   {
     'routeNumber': '747번',
-    'routeType': '급행',
     'routeOverview': {
-      'start': '비하동',
-      'startETA': '5분 뒤 도착',
-      'current': '가경터미널',
+      'start': '청주대학교.뉴시스',
+      'startETA': '7분 뒤 도착',
+      'current': '충북대학교입구',
       'currentETA': '현재 위치',
-      'end': '충북대학교',
-      'endETA': '10분 뒤 도착',
+      'end': '오송역종점',
+      'endETA': '15분 뒤 도착',
     },
-    'departure_times': [
-      "02:35",
-      "02:37",
-      "02:40",
-      // ---
-      "05:50",
-      "06:30",
-      "07:25",
-      "07:55",
-      "08:25",
-      "09:00",
-      "09:40",
-      "10:10",
-      "10:45",
-      "11:20",
-      "11:55",
-      "12:30",
-      "13:10",
-      "13:45",
-      "14:20",
-      "14:55",
-      "15:30",
-      "16:05",
-      "16:40",
-      "17:15",
-      "17:50",
-      "18:25",
-      "19:00",
-      "19:35",
-      "20:10",
-      "20:45",
-      "21:20",
-      "21:55",
-      "23:20",
-    ],
-    'arrival_times': [
-      "02:40",
-      "02:42",
-      "02:45",
-      // ---
-      "06:10",
-      "07:45",
-      "08:40",
-      "09:10",
-      "09:40",
-      "10:15",
-      "10:55",
-      "11:25",
-      "12:00",
-      "12:35",
-      "13:10",
-      "13:45",
-      "14:25",
-      "15:00",
-      "15:35",
-      "16:10",
-      "16:45",
-      "17:20",
-      "17:55",
-      "18:30",
-      "19:05",
-      "19:40",
-      "20:15",
-      "20:50",
-      "21:25",
-      "22:00",
-      "22:35",
-      "23:10",
-      "00:30",
-    ],
-    'stopProgress': [
-      {
-        'stopName': '비하동',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': true,
-      },
-      {
-        'stopName': '가경터미널',
-        'isCurrent': true,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': false,
-      },
-      {
-        'stopName': '사창사거리',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': false,
-        'isBoarding': false,
-      },
-      {
-        'stopName': '충북대학교',
-        'isCurrent': false,
-        'isPassed': false,
-        'isDestination': true,
-        'isBoarding': false,
-      },
-    ],
     'recommendations': [
       {
-        'title': '충북대 정문 맛집',
-        'distance': '0.2 km',
-        'hours': '영업시간 11:00 ~ 22:00',
+        'title': '오송역 근처 카페',
+        'distance': '0.3 km',
+        'hours': '영업시간 08:00 ~ 21:00',
       },
+      {'title': '오송역 식당', 'distance': '0.4 km', 'hours': '영업시간 10:00 ~ 22:00'},
     ],
   },
 ];
 
-class RouteStatusScreen extends StatelessWidget {
+class RouteStatusScreen extends StatefulWidget {
   final int index;
   const RouteStatusScreen({super.key, required this.index});
 
   @override
-  Widget build(BuildContext context) {
-    final routeData = dummyData[index];
-    final routeOverviewData =
-        routeData['routeOverview'] as Map<String, dynamic>;
-    final recommendationsData =
-        routeData['recommendations'] as List<Map<String, dynamic>>;
-    final departureTimes = routeData['departure_times'] as List<String>;
-    final arrivalTimes = routeData['arrival_times'] as List<String>;
+  State<RouteStatusScreen> createState() => _RouteStatusScreenState();
+}
 
-    // ✨ 2. 운행 중이거나 출발 예정인 모든 버스 스케줄을 찾습니다.
-    final List<BusSchedule> activeSchedules = [];
+class _RouteStatusScreenState extends State<RouteStatusScreen> {
+  List<Map<String, dynamic>>? _stopProgress;
+  List<BusSchedule>? _schedules;
+  String? _routeType;
+  bool _isLoading = true;
+  String? _error;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRouteData();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String _getLatestBusStopName(Map<String, dynamic> routeOverviewData) {
+    // 1. 데이터가 준비되지 않았으면 기본값을 반환합니다.
+    if (_stopProgress == null || _schedules == null || _stopProgress!.isEmpty) {
+      return routeOverviewData['current']!;
+    }
+
+    // 2. 사용자의 목적지 정류장 인덱스를 찾습니다.
+    final endStopName = routeOverviewData['end'] as String;
+    final destinationIndex = _stopProgress!.indexWhere(
+      (s) => s['stopName'] == endStopName,
+    );
+
+    // 목적지를 찾을 수 없으면 기본값을 반환합니다.
+    if (destinationIndex == -1) {
+      return routeOverviewData['current']!;
+    }
+
+    // 3. 목적지를 아직 지나치지 않은 버스 중, 목적지에 가장 가까운 버스를 찾습니다.
     final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final stopCount = _stopProgress!.length;
 
-    for (int i = 0; i < departureTimes.length; i++) {
-      final depParts = departureTimes[i].split(':');
-      final arrParts = arrivalTimes[i].split(':');
+    double maxProgressBeforeDestination = -1.0;
+    int lastPassedStopIndexOfClosestBus = -1;
+
+    for (var schedule in _schedules!) {
+      final depParts = schedule.departureTime.split(':');
+      final arrParts = schedule.arrivalTime.split(':');
       var depTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
+        today.year,
+        today.month,
+        today.day,
         int.parse(depParts[0]),
         int.parse(depParts[1]),
       );
       var arrTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
+        today.year,
+        today.month,
+        today.day,
         int.parse(arrParts[0]),
         int.parse(arrParts[1]),
       );
@@ -299,14 +140,188 @@ class RouteStatusScreen extends StatelessWidget {
         arrTime = arrTime.add(const Duration(days: 1));
       }
 
-      // 현재 시간이 도착 시간보다 이전인 모든 버스를 리스트에 추가 (break 제거)
-      if (now.isBefore(arrTime)) {
-        activeSchedules.add(
-          BusSchedule(
-            departureTime: departureTimes[i],
-            arrivalTime: arrivalTimes[i],
-          ),
+      // 현재 운행 중인 버스인지 확인합니다.
+      if (now.isAfter(depTime) && now.isBefore(arrTime)) {
+        final totalDuration = arrTime.difference(depTime).inMilliseconds;
+        final elapsedTime = now.difference(depTime).inMilliseconds;
+        final progress = (elapsedTime / totalDuration).clamp(0.0, 1.0);
+
+        final currentStopIndex = (progress * (stopCount - 1)).floor();
+
+        // 버스가 목적지를 지나지 않았는지 확인합니다.
+        if (currentStopIndex < destinationIndex) {
+          // 목적지에 가장 가까운 버스(가장 많이 진행한 버스)를 선택합니다.
+          if (progress > maxProgressBeforeDestination) {
+            maxProgressBeforeDestination = progress;
+            lastPassedStopIndexOfClosestBus = currentStopIndex;
+          }
+        }
+      }
+    }
+
+    // 4. 조건에 맞는 버스가 없으면 기본값을 반환합니다.
+    if (maxProgressBeforeDestination == -1.0) {
+      return '-';
+    }
+
+    // 5. 가장 가까운 버스가 다음으로 지나갈 정류장 이름을 계산하여 반환합니다.
+    final nextStopIndex = lastPassedStopIndexOfClosestBus + 1;
+    final safeIndex = nextStopIndex.clamp(0, stopCount - 1);
+
+    return _stopProgress![safeIndex]['stopName'];
+  }
+
+  String _parseDuration(String duration) {
+    final match = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(duration);
+    if (match == null) return '00:00';
+
+    final hours = match.group(1) ?? '0';
+    final minutes = match.group(2) ?? '0';
+
+    return '${hours.padLeft(2, '0')}:${minutes.padLeft(2, '0')}';
+  }
+
+  Future<void> _loadRouteData() async {
+    try {
+      final routeData = dummyData[widget.index];
+      final routeOverviewData =
+          routeData['routeOverview'] as Map<String, dynamic>;
+      final routeNumberString = routeData['routeNumber'] as String;
+      final busNumber = routeNumberString.replaceAll('번', '');
+
+      final startStop = routeOverviewData['start'] as String;
+      final endStop = routeOverviewData['end'] as String;
+
+      // Fetch routes and times concurrently
+      final responses = await Future.wait([
+        http.get(Uri.parse('$baseUrl/bus_routes/$busNumber')),
+        http.get(Uri.parse('$baseUrl/bus_times/$busNumber')),
+        http.get(Uri.parse('$baseUrl/bus/$busNumber')),
+      ]);
+
+      final routeResponse = responses[0];
+      final timeResponse = responses[1];
+      final typeResponse = responses[2];
+
+      if (routeResponse.statusCode != 200) {
+        throw Exception('버스 노선 정보를 불러오는 데 실패했습니다.');
+      }
+      if (timeResponse.statusCode != 200) {
+        throw Exception('버스 시간표 정보를 불러오는 데 실패했습니다.');
+      }
+      if (typeResponse.statusCode != 200) {
+        throw Exception('버스 종류 정보를 불러오는 데 실패했습니다.');
+      }
+
+      // Process route data
+      final List<dynamic> routeJson = json.decode(
+        utf8.decode(routeResponse.bodyBytes),
+      );
+      final directionData = routeJson.firstWhere((d) {
+        final stops = d['stops'] as List<dynamic>;
+        final startIndex = stops.indexWhere(
+          (s) => s['station_name'] == startStop,
         );
+        final endIndex = stops.indexWhere((s) => s['station_name'] == endStop);
+        return startIndex != -1 && endIndex != -1 && startIndex < endIndex;
+      }, orElse: () => null);
+      if (directionData == null) {
+        throw Exception('해당 출발-도착지를 포함하는 노선을 찾을 수 없습니다.');
+      }
+
+      final targetStops = directionData['stops'] as List<dynamic>;
+      final direction = directionData['direction'] as String;
+
+      List<Map<String, dynamic>> processedStops = [];
+      for (int i = 0; i < targetStops.length; i++) {
+        final stop = targetStops[i];
+        final stopName = stop['station_name'] as String;
+
+        processedStops.add({
+          'stopName': stopName,
+          'isBoarding': stopName == startStop,
+          'isDestination': stopName == endStop,
+          'isCurrent': false, // 초기값은 false로, build 시점에 동적으로 결정됩니다.
+        });
+      }
+
+      // Process time data
+      final List<dynamic> timeJson = json.decode(
+        utf8.decode(timeResponse.bodyBytes),
+      );
+      final List<BusSchedule> schedules = timeJson
+          .where((time) => time['direction'] == direction)
+          .map(
+            (time) => BusSchedule(
+              departureTime: _parseDuration(time['start_time']),
+              arrivalTime: _parseDuration(time['arrive_time']),
+            ),
+          )
+          .toList();
+
+      // Process type data
+      final Map<String, dynamic> typeJson = json.decode(
+        utf8.decode(typeResponse.bodyBytes),
+      );
+      final String fetchedRouteType = typeJson['bus_type'];
+
+      setState(() {
+        _stopProgress = processedStops;
+        _schedules = schedules;
+        _routeType = fetchedRouteType;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final routeData = dummyData[widget.index];
+    final routeOverviewData =
+        routeData['routeOverview'] as Map<String, dynamic>;
+    final recommendationsData =
+        routeData['recommendations'] as List<Map<String, dynamic>>;
+
+    final String currentBusStopName = _getLatestBusStopName(routeOverviewData);
+    final String currentBusStopETA = (currentBusStopName == '-')
+        ? ''
+        : routeOverviewData['currentETA']!;
+
+    // ✨ 2. 운행 중이거나 출발 예정인 모든 버스 스케줄을 찾습니다.
+    final List<BusSchedule> activeSchedules = [];
+    if (_schedules != null) {
+      final now = DateTime.now();
+      for (final schedule in _schedules!) {
+        final depParts = schedule.departureTime.split(':');
+        final arrParts = schedule.arrivalTime.split(':');
+        var depTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(depParts[0]),
+          int.parse(depParts[1]),
+        );
+        var arrTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(arrParts[0]),
+          int.parse(arrParts[1]),
+        );
+
+        if (arrTime.isBefore(depTime)) {
+          arrTime = arrTime.add(const Duration(days: 1));
+        }
+
+        // 현재 시간이 도착 시간보다 이전인 모든 버스를 리스트에 추가 (break 제거)
+        if (now.isBefore(arrTime)) {
+          activeSchedules.add(schedule);
+        }
       }
     }
 
@@ -335,17 +350,37 @@ class RouteStatusScreen extends StatelessWidget {
             RouteOverviewCard(
               start: routeOverviewData['start']!,
               startETA: routeOverviewData['startETA']!,
-              current: routeOverviewData['current']!,
-              currentETA: routeOverviewData['currentETA']!,
+              current: currentBusStopName,
+              currentETA: currentBusStopETA,
               end: routeOverviewData['end']!,
               endETA: routeOverviewData['endETA']!,
             ),
             const SizedBox(height: 16),
-            StopProgressCard(
-              stops: routeData['stopProgress'] as List<Map<String, dynamic>>,
-              routeType: routeData['routeType'] as String,
-              schedules: activeSchedules,
-            ),
+            if (_isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (_error != null)
+              Center(child: Text('오류: $_error'))
+            else if (_stopProgress != null &&
+                _schedules != null &&
+                _routeType != null)
+              Builder(
+                builder: (context) {
+                  // 실시간으로 계산된 버스 위치에 따라 isCurrent 플래그를 업데이트합니다.
+                  final updatedStops = _stopProgress!.map((stop) {
+                    return {
+                      ...stop,
+                      'isCurrent': stop['stopName'] == currentBusStopName,
+                    };
+                  }).toList();
+                  return StopProgressCard(
+                    stops: updatedStops,
+                    routeType: _routeType!,
+                    schedules: activeSchedules,
+                  );
+                },
+              )
+            else
+              const Center(child: Text('노선 진행 정보를 불러올 수 없습니다.')),
             const SizedBox(height: 24),
             const Padding(
               padding: EdgeInsets.only(left: 4.0, bottom: 16.0),

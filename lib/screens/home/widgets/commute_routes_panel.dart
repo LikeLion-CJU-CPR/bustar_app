@@ -41,12 +41,6 @@ class CommuteCardsPanel extends StatelessWidget {
                     const SizedBox(height: 16),
                     _buildRouteRow(
                       CupertinoIcons.circle_filled,
-                      '개신현대아파트',
-                      Colors.blue,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildRouteRow(
-                      CupertinoIcons.circle_filled,
                       '충북대학교입구',
                       Colors.blue,
                     ),
