@@ -21,12 +21,12 @@ class PointsOverviewCard extends StatelessWidget {
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade50, Colors.indigo.shade100],
+          colors: [Colors.lightGreen.shade50, Colors.green.shade100],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: Colors.blue.shade200),
+        border: Border.all(color: Colors.lightGreen.shade200),
       ),
       child: Column(
         children: [
@@ -35,16 +35,16 @@ class PointsOverviewCard extends StatelessWidget {
               RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
               (Match m) => '${m[1]},',
             ),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 36,
-              color: Colors.blue.shade600,
+              color: Color(0xFF6CB77E),
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            '보유 포인트',
-            style: TextStyle(fontSize: 14, color: Colors.blue.shade700),
+          const Text(
+            '보유 별사탕',
+            style: TextStyle(fontSize: 14, color: Color(0xFF6CB77E)),
           ),
           const SizedBox(height: 24),
           Row(
@@ -64,8 +64,12 @@ class PointsOverviewCard extends StatelessWidget {
               height: 8,
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: Colors.blue.shade200.withValues(alpha: .5),
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade600),
+                backgroundColor: Colors.lightGreen.shade200.withValues(
+                  alpha: .5,
+                ),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color(0xFF6CB77E),
+                ),
               ),
             ),
           ),
@@ -96,7 +100,7 @@ class PointsOverviewCard extends StatelessWidget {
                     ),
                   );
                 },
-                backgroundColor: Colors.blue.shade600,
+                backgroundColor: const Color(0xFF6CB77E),
                 foregroundColor: Colors.white,
               ),
               const SizedBox(width: 12),
@@ -111,8 +115,8 @@ class PointsOverviewCard extends StatelessWidget {
                   );
                 },
                 backgroundColor: Colors.white,
-                foregroundColor: Colors.blue.shade600,
-                side: BorderSide(color: Colors.blue.shade600),
+                foregroundColor: const Color(0xFF6CB77E),
+                side: const BorderSide(color: Color(0xFF6CB77E)),
               ),
             ],
           ),

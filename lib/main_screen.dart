@@ -41,8 +41,8 @@ class _MainScreenState extends State<MainScreen> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.star_rounded),
-              label: '포인트',
+              icon: Icon(Icons.star_rate_rounded),
+              label: '내 별사탕',
             ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: '내 정보'),
           ],

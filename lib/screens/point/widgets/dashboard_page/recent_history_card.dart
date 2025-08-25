@@ -25,7 +25,7 @@ class RecentHistoryCard extends StatelessWidget {
                     Icon(CupertinoIcons.time, size: 20),
                     SizedBox(width: 8),
                     Text(
-                      '최근 포인트 내역',
+                      '최근 별사탕 내역',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -41,9 +41,9 @@ class RecentHistoryCard extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     '전체 보기',
-                    style: TextStyle(color: Colors.blue.shade600),
+                    style: TextStyle(color: Color(0xFF6CB77E)),
                   ),
                 ),
               ],

@@ -35,7 +35,7 @@ class CategoryFilters extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor: selectedCategory == categories[i]['id']
-                      ? Colors.blue.shade600
+                      ? const Color(0xFF6CB77E)
                       : Colors.white,
                   foregroundColor: selectedCategory == categories[i]['id']
                       ? Colors.white

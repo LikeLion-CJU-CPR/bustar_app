@@ -123,9 +123,9 @@ class RewardListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${reward.points}P',
-                    style: TextStyle(
-                      color: Colors.blue.shade600,
+                    '${reward.points} ✦',
+                    style: const TextStyle(
+                      color: Color(0xFF6CB77E),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -174,7 +174,7 @@ class RewardListItem extends StatelessWidget {
                               : null,
                           label: canAfford ? '구매' : '부족',
                           backgroundColor: canAfford
-                              ? Colors.blue.shade600
+                              ? const Color(0xFF6CB77E)
                               : Colors.grey.shade300,
                           foregroundColor: canAfford
                               ? Colors.white

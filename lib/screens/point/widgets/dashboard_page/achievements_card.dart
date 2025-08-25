@@ -68,7 +68,7 @@ class AchievementsCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: item.isCompleted
-                                ? Colors.blue.shade600
+                                ? const Color(0xFF6CB77E)
                                 : Colors.grey.shade300,
                             borderRadius: BorderRadius.circular(6.0),
                           ),

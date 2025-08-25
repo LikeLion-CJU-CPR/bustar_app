@@ -159,7 +159,7 @@ class _UsageScreenState extends State<UsageScreen> {
                     final response = await http.post(
                       Uri.parse('$baseUrl/purchase/product/'),
                       headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
+                        'Content-Type': 'application/json; charset=UTF-8',
                       },
                       body: json.encode({
                         'user_id': 1, // 사용자 ID 1로 가정
@@ -173,31 +173,41 @@ class _UsageScreenState extends State<UsageScreen> {
                     Navigator.of(dialogContext).pop();
 
                     if (response.statusCode == 200) {
-                      final responseData =
-                          json.decode(utf8.decode(response.bodyBytes));
-                      pointProvider
-                          .setPoints(responseData['new_point_balance']);
+                      final responseData = json.decode(
+                        utf8.decode(response.bodyBytes),
+                      );
+                      pointProvider.setPoints(
+                        responseData['new_point_balance'],
+                      );
                       setState(() {
                         _purchasedIds.add(item.id);
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('상품을 성공적으로 구매했습니다!'),
-                            backgroundColor: Colors.green),
+                          content: Text('상품을 성공적으로 구매했습니다!'),
+                          backgroundColor: Colors.green,
+                        ),
                       );
                     } else {
-                      final errorData =
-                          json.decode(utf8.decode(response.bodyBytes));
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      final errorData = json.decode(
+                        utf8.decode(response.bodyBytes),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
                           content: Text('구매 실패: ${errorData['detail']}'),
-                          backgroundColor: Colors.red));
+                          backgroundColor: Colors.red,
+                        ),
+                      );
                     }
                   } catch (e) {
                     if (!context.mounted) return;
                     Navigator.of(dialogContext).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
                         content: Text('오류가 발생했습니다: $e'),
-                        backgroundColor: Colors.red));
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 },
                 child: const Text('구매 확정'),
@@ -233,11 +243,11 @@ class _UsageScreenState extends State<UsageScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
-              '포인트 사용',
+              '별사탕 사용',
               style: TextStyle(color: Colors.black, fontSize: 18),
             ),
             Text(
-              '보유 포인트: ${currentPoints}P',
+              '보유 별사탕: $currentPoints ✦',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
             ),
           ],

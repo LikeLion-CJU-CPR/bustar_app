@@ -48,7 +48,9 @@ class FilterTabs extends StatelessWidget {
             onPressed: () => onFilterSelected(filter['key'] as String),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: isSelected ? Colors.blue.shade600 : Colors.white,
+              backgroundColor: isSelected
+                  ? const Color(0xFF6CB77E)
+                  : Colors.white,
               foregroundColor: isSelected ? Colors.white : Colors.black,
               side: isSelected
                   ? BorderSide.none

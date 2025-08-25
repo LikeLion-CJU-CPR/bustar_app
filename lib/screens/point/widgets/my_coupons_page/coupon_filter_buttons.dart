@@ -36,10 +36,16 @@ class CouponFilterButtons extends StatelessWidget {
             onPressed: () => onFilterSelected(filter['id']!),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: isSelected ? Colors.blue.shade600 : Colors.white,
+              backgroundColor: isSelected
+                  ? const Color(0xFF6CB77E)
+                  : Colors.white,
               foregroundColor: isSelected ? Colors.white : Colors.black,
-              side: isSelected ? BorderSide.none : BorderSide(color: Colors.grey.shade300),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              side: isSelected
+                  ? BorderSide.none
+                  : BorderSide(color: Colors.grey.shade300),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: Text('${filter['name']} ($count)'),
           );
