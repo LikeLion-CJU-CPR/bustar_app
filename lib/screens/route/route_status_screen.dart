@@ -28,14 +28,20 @@ final List<Map<String, dynamic>> dummyData = [
     },
     'recommendations': [
       {
-        'title': '청주대학교 근처 맛집',
+        'title': '청대식당',
         'distance': '0.2 km',
         'hours': '영업시간 11:00 ~ 22:00',
+        'isTag': true,
+        'chip1': '2000￦',
+        'chip2': '식당',
       },
       {
-        'title': '청주대 정문 카페',
+        'title': '청대정문카페',
         'distance': '0.3 km',
         'hours': '영업시간 09:00 ~ 21:00',
+        'isTag': false,
+        'chip1': '빵',
+        'chip2': '카페',
       },
     ],
   },
@@ -51,11 +57,21 @@ final List<Map<String, dynamic>> dummyData = [
     },
     'recommendations': [
       {
-        'title': '오송역 근처 카페',
+        'title': '오송역멋대빙수',
         'distance': '0.3 km',
         'hours': '영업시간 08:00 ~ 21:00',
+        'isTag': false,
+        'chip1': '빙수',
+        'chip2': '카페',
       },
-      {'title': '오송역 식당', 'distance': '0.4 km', 'hours': '영업시간 10:00 ~ 22:00'},
+      {
+        'title': '오송역 식당',
+        'distance': '0.4 km',
+        'hours': '영업시간 10:00 ~ 22:00',
+        'isTag': true,
+        'chip1': '5%',
+        'chip2': '식당',
+      },
     ],
   },
 ];
@@ -396,6 +412,9 @@ class _RouteStatusScreenState extends State<RouteStatusScreen> {
                   title: rec['title']!,
                   distance: rec['distance']!,
                   hours: rec['hours']!,
+                  isTag: rec['isTag']!,
+                  chip1: rec['chip1']!,
+                  chip2: rec['chip2']!,
                 ),
               );
             }),
