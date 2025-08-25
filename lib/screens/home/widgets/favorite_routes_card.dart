@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bustar_app/widgets/custom_card.dart';
 import 'package:bustar_app/screens/route/route_status_screen.dart';
+import 'package:bustar_app/screens/home/widgets/build_route_row.dart';
 
 class FavoriteRoutesSection extends StatefulWidget {
   const FavoriteRoutesSection({super.key});
@@ -87,22 +87,12 @@ class _FavoriteRoutesSectionState extends State<FavoriteRoutesSection> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRouteRow(CupertinoIcons.circle_filled, from, fromColor),
+                  BuildRouteRow(text: from, color: fromColor),
                   const SizedBox(height: 8),
-                  _buildRouteRow(CupertinoIcons.circle_filled, to, toColor),
+                  BuildRouteRow(text: to, color: toColor),
                 ],
               ),
       ),
-    );
-  }
-
-  Widget _buildRouteRow(IconData icon, String text, Color color) {
-    return Row(
-      children: [
-        Icon(icon, size: 12, color: color),
-        const SizedBox(width: 8),
-        Text(text),
-      ],
     );
   }
 }

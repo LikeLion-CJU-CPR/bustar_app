@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:bustar_app/widgets/custom_card.dart';
 import 'package:bustar_app/screens/route/route_status_screen.dart';
+import 'package:bustar_app/screens/home/widgets/build_route_row.dart';
 
 class CommuteCardsPanel extends StatelessWidget {
   const CommuteCardsPanel({super.key});
@@ -24,32 +24,24 @@ class CommuteCardsPanel extends StatelessWidget {
                   ),
                 );
               },
-              child: CustomCard(
-                padding: const EdgeInsets.all(16),
+              child: const CustomCard(
+                padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       '출근 경로',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
+                    SizedBox(height: 5),
+                    Text(
                       "내일 아침 6:20분 출발",
                       style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
-                    const SizedBox(height: 16),
-                    _buildRouteRow(
-                      CupertinoIcons.circle_filled,
-                      '충북대학교입구',
-                      Colors.blue,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildRouteRow(
-                      CupertinoIcons.circle_filled,
-                      '청주대학교.뉴시스',
-                      Colors.blue,
-                    ),
+                    SizedBox(height: 16),
+                    BuildRouteRow(text: '충북대학교입구', color: Colors.blue),
+                    SizedBox(height: 8),
+                    BuildRouteRow(text: '청주대학교.뉴시스', color: Colors.blue),
                   ],
                 ),
               ),
@@ -71,16 +63,6 @@ class CommuteCardsPanel extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildRouteRow(IconData icon, String text, Color color) {
-    return Row(
-      children: [
-        Icon(icon, size: 12, color: color),
-        const SizedBox(width: 8),
-        Expanded(child: Text(text)),
-      ],
     );
   }
 }

@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(icon: Icon(Icons.person), label: '내 정보'),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue[800],
+          selectedItemColor: const Color(0xFF6CB77E),
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,

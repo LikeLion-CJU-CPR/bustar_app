@@ -12,11 +12,11 @@ class RouteSearchScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.directions_bus, color: Colors.black),
-            SizedBox(width: 8),
-            Text(
+            Image.asset('assets/images/bustar_icon.png', width: 32, height: 32),
+            const SizedBox(width: 8),
+            const Text(
               'BUSTAR',
               style: TextStyle(
                 color: Colors.black,
