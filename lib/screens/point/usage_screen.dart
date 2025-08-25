@@ -72,10 +72,7 @@ class _UsageScreenState extends State<UsageScreen> {
   }
 
   // 구매 확인 다이얼로그 표시 함수
-  Future<void> _showPurchaseConfirmationDialog(
-    RewardItem item,
-    BuildContext context,
-  ) async {
+  Future<void> _showPurchaseConfirmationDialog(RewardItem item) async {
     final pointProvider = context.read<PointProvider>();
 
     return showDialog<void>(
@@ -312,7 +309,8 @@ class _UsageScreenState extends State<UsageScreen> {
                           currentPoints: currentPoints,
                           isPurchased: _purchasedIds.contains(reward.id),
                           onPurchase: (item) {
-                            _showPurchaseConfirmationDialog(item, context);
+                            // ✨ 여기서 context를 전달하지 않습니다.
+                            _showPurchaseConfirmationDialog(item);
                           },
                         );
                       },

@@ -5,7 +5,6 @@ import '../../../../widgets/action_button.dart';
 import '../../models/reward_item_model.dart';
 
 class RewardListItem extends StatelessWidget {
-  // ... (생성자는 이전과 동일)
   final RewardItem reward;
   final int currentPoints;
   final bool isPurchased;
